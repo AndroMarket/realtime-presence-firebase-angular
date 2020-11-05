@@ -1,31 +1,39 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { environment } from '../environments/environment';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { AppRoutingModule } from './app-routing.module';
+// App Modules
 import { AppComponent } from './app.component';
+import { AppRoutingModule } from './app-routing.module';
+import { HomePageComponent } from './home-page/home-page.component';
+import { SharedModule } from './shared/shared.module';
+import { UserModule } from './user/user.module';
 
+// Firebase imports
 import { AngularFireModule } from '@angular/fire';
-
-import { AngularFireAuthModule } from '@angular/fire/auth';
-import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
-// Instructions ---->
-// Replace configPlaceholder with your firebase credentials
-import configPlaceholder from '../env';
-import { UserComponent } from './user/user.component';
 
 @NgModule({
-  declarations: [AppComponent, UserComponent],
+  declarations: [
+    AppComponent,
+    HomePageComponent,
+  ],
   imports: [
-    BrowserModule,
+    BrowserModule.withServerTransition({ appId: 'serverApp' }),
     AppRoutingModule,
-    AngularFireModule.initializeApp(configPlaceholder),
+    BrowserAnimationsModule,
+    SharedModule,
+    UserModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule,
     AngularFireAuthModule,
-    AngularFireDatabaseModule,
-    AngularFirestoreModule
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }
