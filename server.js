@@ -2,9 +2,9 @@ const express = require('express');
 const https = require('https');
 const app = express();
 
-app.use(express.static('./dist/'));
+app.use(express.static('./dist/browser/'));
 app.get('/*', (req, res) =>
-  res.sendFile('index.html', { root: '/dist/' }),
+  res.sendFile('index.html', { root: '/dist/browser/' }),
 );
 
 app.listen(process.env.PORT || 8080);
